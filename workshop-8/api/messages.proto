@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option go_package = "pkg/messages";
+
+package messages;
+
+service Messages {
+    rpc GetMessagesSummary(google.protobuf.Empty) returns (MessagesSummary) {
+        
+    }
+
+    // server-to-client stream
+    rpc PullMessages(google.protobuf.Empty) returns(stream Message) {}
+
+    // client-to-server stream
+    rpc PushMessages(stream Message) returns (MessagesSummary) {}
+
+    // bi-directional
+    rpc ExchangeMessages(stream Message) returns (stream Message) {}
+}
+
+message Message {
+    string ts = 1;
+    string text = 2;
+    string author = 3;
+}
+
+message MessagesSummary {
+    uint64 count = 1;
+}

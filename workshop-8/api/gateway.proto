@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option go_package = "pkg/gateway";
+
+package gateway;
+
+service Gateway {
+    rpc GetMessagesSummary(google.protobuf.Empty) returns (MessagesSummary) {}
+
+    rpc PullMessages(google.protobuf.Empty) returns(PullMessagesResponse) {}
+
+    rpc PushMessages(PushMessagesRequest) returns (PushMessagesRequestResponse) {}
+
+    rpc ExchangeMessages(ExchangeMessagesRequest) returns (ExchangeMessagesResponse) {}
+}
+
+message MessagesSummary {
+    uint64 count = 1;
+}
+
+message Message {
+    string ts = 1;
+    string text = 2;
+    string author = 3;
+}
+
+message PullMessagesResponse {
+    repeated Message messages = 1;
+}
+
+message PushMessagesRequest {
+    repeated Message messages = 1;
+}
+
+message PushMessagesRequestResponse {
+    MessagesSummary summary = 1;
+}
+
+message ExchangeMessagesRequest {
+    repeated Message messages = 1;
+}
+
+message ExchangeMessagesResponse {
+    repeated Message messages = 1;
+}
